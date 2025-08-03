@@ -1,0 +1,4 @@
+Download the font you want to use and use grub-mkfont
+-s equals the font size
+-o specifies the output 
+example: grub2-mkfont -o ./oxygen.pf2 -s 24 ./Oxygen_Regular_Oxygen.ttf
