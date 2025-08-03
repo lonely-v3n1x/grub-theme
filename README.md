@@ -18,7 +18,7 @@ GRUB bootloader themer.
     ```bash
     sudo ./install_theme.sh
     ```
-    This script attempts to copy the theme to `/boot/grub/themes/grubphemous` or `/boot/grub2/themes/grubphemous`.
+    This script attempts to copy the theme to `/boot/grub/themes/grub_themer` or `/boot/grub2/themes/grub_themer`.
 
 3.  **Configure GRUB**:
     Edit your GRUB configuration file (usually `/etc/default/grub`) using a text editor:
@@ -27,9 +27,9 @@ GRUB bootloader themer.
     ```
     Locate the `GRUB_THEME=` line. If it exists, modify it. If not, add the line. Set it as follows:
     ```ini
-    GRUB_THEME="/boot/grub/themes/grubphemous/theme.txt"
+    GRUB_THEME="/boot/grub/themes/grub_themer/theme.txt"
     ```
-    (If your GRUB directory is `/boot/grub2`, adjust the path to `/boot/grub2/themes/grubphemous/theme.txt`)
+    (If your GRUB directory is `/boot/grub2`, adjust the path to `/boot/grub2/themes/grub_themer/theme.txt`)
 
 4.  **Update GRUB Configuration, e.g.:**
     ```bash
@@ -38,16 +38,16 @@ GRUB bootloader themer.
 
 ## Customization
 
-By default, the background image is provided by `grub-theme/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grubphemous`.
+By default, the background image is provided by `grub-theme/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grub_themer`.
 
 ### Background Image
 
 * The `install_theme.sh` script will offer to run the background selection utility during installation.
-* You can change the background at any time by running the [`choose_background.sh`](/home/pvtoari/repos/grubphemous-theme/choose_background.sh) script directly from the repo directory:
+* You can change the background at any time by running the [`choose_background.sh`](/home/pvtoari/repos/grub_themer-theme/choose_background.sh) script directly from the repo directory:
     ```bash
     ./choose_background.sh
     ```
-    After selecting a new background, you will need to re-copy the theme to your GRUB themes directory, or manually copy the updated `grubphemous/background.png` file.
+    After selecting a new background, you will need to re-copy the theme to your GRUB themes directory, or manually copy the updated `grub_themer/background.png` file.
     
 * Alternatively, you can manually replace the `grub-theme/background.png` file within the theme's source directory with your desired PNG image and then copy the `grub-theme` folder to `/boot/grub/themes/` (or `/boot/grub2/themes/`).
 
