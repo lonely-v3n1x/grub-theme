@@ -1,16 +1,15 @@
 # Grubphemous
 
-Grubphemous is a GRUB bootloader theme inspired on Blasphemous's art.
+GRUB bootloader themer.
 
-![Grubphemous Theme Preview](/resources/preview.png)
+<!-- ![Grubphemous Theme Preview](/resources/preview.png) -->
 
 ## Installation
 
 1.  **Clone the repository**:
     ```bash
-    git clone https://github.com/pvtoari/grubphemous-theme
-
-    cd grubphemous-theme
+    git clone https://github.com/lonely-v3n1x/grub-theme
+    cd grub-theme
     ```
 
 2.  **Run the installation script with sudo**:
@@ -39,7 +38,7 @@ Grubphemous is a GRUB bootloader theme inspired on Blasphemous's art.
 
 ## Customization
 
-By default, the background image is provided by `grubphemous/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grubphemous`.
+By default, the background image is provided by `grub-theme/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grubphemous`.
 
 ### Background Image
 
@@ -50,14 +49,15 @@ By default, the background image is provided by `grubphemous/background.png` and
     ```
     After selecting a new background, you will need to re-copy the theme to your GRUB themes directory, or manually copy the updated `grubphemous/background.png` file.
     
-* Alternatively, you can manually replace the `grubphemous/background.png` file within the theme's source directory with your desired PNG image and then copy the `grubphemous` folder to `/boot/grub/themes/` (or `/boot/grub2/themes/`).
+* Alternatively, you can manually replace the `grub-theme/background.png` file within the theme's source directory with your desired PNG image and then copy the `grub-theme` folder to `/boot/grub/themes/` (or `/boot/grub2/themes/`).
 
-## TODO
-- ~~If possible, add a children of the moonlight cursor at the right of the selection item (like the one in the game)~~ implemented by [@sergoncano](https://github.com/sergoncano), thank you!
-- Improve compatibility with other resolutions
+<!-- ## TODO -->
+<!-- - ~~If possible, add a children of the moonlight cursor at the right of the selection item (like the one in the game)~~ implemented by [@sergoncano](https://github.com/sergoncano), thank you! -->
+<!-- - Improve compatibility with other resolutions -->
 
 ## Credits
 
+* ["Grubphemous"](https://github.com/pvtoari/grubphemous-theme)
 * ["Blasphemous"](https://fontstruct.com/fontstructions/show/2138043/blasphemous-1) font created by Patrick H. Lauke via Fontstruct.
 * The `install_theme.sh` script's structure and some functionalities were inspired by the [minegrub-theme by Lxtharia](https://github.com/Lxtharia/minegrub-theme) repo.
 * The game Blasphemous and its art by The Game Kitchen, which served as the inspiration for this theme.
