@@ -4,8 +4,6 @@ GRUB bootloader themer.
 
 ![Grubphemous Theme Preview](resources/preview.png)
 
-> The preview above is an HTML/CSS mockup of `theme.txt` rendered at 1920×1080 (the pixel-font is a close free approximation; the real "Blasphemous" font can't be rendered in a browser). The source mockup lives in [`resources/preview.html`](resources/preview.html).
-
 ## Installation
 
 1.  **Clone the repository**:
