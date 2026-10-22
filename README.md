@@ -2,7 +2,9 @@
 
 GRUB bootloader themer.
 
-<!-- ![Grubphemous Theme Preview](/resources/preview.png) -->
+![Grubphemous Theme Preview](resources/preview.png)
+
+> The preview above is an HTML/CSS mockup of `theme.txt` rendered at 1920×1080 (the pixel-font is a close free approximation; the real "Blasphemous" font can't be rendered in a browser). The source mockup lives in [`resources/preview.html`](resources/preview.html).
 
 ## Installation
 
@@ -20,7 +22,11 @@ GRUB bootloader themer.
     ```
     This script attempts to copy the theme to `/boot/grub/themes/grub_themer` or `/boot/grub2/themes/grub_themer`.
 
-3.  **Configure GRUB**:
+    After copying, the script also offers two **optional** steps (answer `y` to use them, `n`/Enter to skip):
+    *   **Update `GRUB_THEME=` in `/etc/default/grub` automatically** — a one-time backup is saved to `/etc/default/grub.grubphemous-backup` first.
+    *   **Re-run `grub-mkconfig`** (or `grub2-mkconfig` on Fedora/RHEL-family) to regenerate `grub.cfg` right away.
+
+3.  **Configure GRUB** *(only needed if you skipped the automatic step above)*:
     Edit your GRUB configuration file (usually `/etc/default/grub`) using a text editor:
     ```bash
     sudo nano /etc/default/grub
@@ -36,20 +42,33 @@ GRUB bootloader themer.
     sudo grub-mkconfig -o /boot/grub/grub.cfg
     ```
 
+## Uninstallation
+
+Run the uninstall script with sudo:
+
+```bash
+sudo ./uninstall_theme.sh
+```
+
+It will optionally (each step is a confirmable prompt, default `n`):
+*   remove `/boot/grub/themes/grub_themer` (or the `/boot/grub2` equivalent) — refuses if the directory doesn't look like a `grub_themer` theme,
+*   comment out the `GRUB_THEME=` line in `/etc/default/grub` (one-time backup saved to `/etc/default/grub.grubphemous-backup-uninstall` first),
+*   re-run `grub-mkconfig`/`grub2-mkconfig` to regenerate `grub.cfg`.
+
 ## Customization
 
-By default, the background image is provided by `grub-theme/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grub_themer`.
+By default, the background image is provided by `grub_themer/background.png` and set during installation, but if you want to set a different background, you can add your own PNG image to the `background/` directory before running the installation script, or you can change it later manually in the theme's folder e.g.,  `/boot/grub/themes/grub_themer`.
 
 ### Background Image
 
 * The `install_theme.sh` script will offer to run the background selection utility during installation.
-* You can change the background at any time by running the [`choose_background.sh`](/home/pvtoari/repos/grub_themer-theme/choose_background.sh) script directly from the repo directory:
+* You can change the background at any time by running the [`choose_background.sh`](choose_background.sh) script directly from the repo directory:
     ```bash
     ./choose_background.sh
     ```
     After selecting a new background, you will need to re-copy the theme to your GRUB themes directory, or manually copy the updated `grub_themer/background.png` file.
     
-* Alternatively, you can manually replace the `grub-theme/background.png` file within the theme's source directory with your desired PNG image and then copy the `grub-theme` folder to `/boot/grub/themes/` (or `/boot/grub2/themes/`).
+* Alternatively, you can manually replace the `grub_themer/background.png` file within the theme's source directory with your desired PNG image and then copy the `grub_themer` folder to `/boot/grub/themes/` (or `/boot/grub2/themes/`).
 
 <!-- ## TODO -->
 <!-- - ~~If possible, add a children of the moonlight cursor at the right of the selection item (like the one in the game)~~ implemented by [@sergoncano](https://github.com/sergoncano), thank you! -->

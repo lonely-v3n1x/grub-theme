@@ -1,0 +1,49 @@
+name: ShellCheck
+
+on:
+  push:
+    branches: [main, master]
+    paths: [".github/**", "*.sh", "**/*.sh"]
+  pull_request:
+    paths: [".github/**", "*.sh", "**/*.sh"]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install shellcheck
+        run: sudo apt-get install -y shellcheck
+
+      # Fallback: `git ls-files '*.sh'` lists every tracked *.sh anywhere in the
+      # repo (glob-based, so root scripts like install_theme.sh and any nested
+      # or future scripts such as uninstall_theme.sh are picked up automatically).
+      # If the list is empty (e.g. no tracked scripts), skip instead of failing.
+      - name: Run strict shellcheck (errors fail CI)
+        # -S error: only error-severity findings break the build. Style-level
+        # (unfixable/noise) findings deliberately do NOT fail CI here.
+        run: |
+          scripts=$(git ls-files '*.sh')
+          if [ -z "$scripts" ]; then
+            echo "No shell scripts found; skipping."
+            exit 0
+          fi
+          shellcheck -S error $scripts
+
+      # Advisory step: ALWAYS passes (|| true) but prints style/info findings so
+      # contributors can see suggestions without getting a red X in CI.
+      - name: Shellcheck advice (informational, never fails)
+        if: always()
+        run: |
+          scripts=$(git ls-files '*.sh')
+          if [ -z "$scripts" ]; then
+            echo "No shell scripts found."
+            exit 0
+          fi
+          shellcheck -S style $scripts || true
+
+      - name: Summary of checked scripts
+        if: always()
+        run: echo "Scripts checked:" && git ls-files '*.sh'

@@ -26,6 +26,20 @@ else
 fi
 theme_path="$grub_path/themes/grub_themer"
 
+# regenerate grub.cfg (self-contained, also duplicated in uninstall_theme.sh)
+run_grub_mkconfig() {
+    if command -v grub-mkconfig >/dev/null 2>&1 ; then
+        grub-mkconfig -o "$grub_path/grub.cfg" || { echo "[ERROR] grub-mkconfig failed!"; return 1; }
+        echo "[INFO] Regenerated $grub_path/grub.cfg"
+    elif command -v grub2-mkconfig >/dev/null 2>&1 ; then
+        grub2-mkconfig -o "$grub_path/grub.cfg" || { echo "[ERROR] grub2-mkconfig failed!"; return 1; }
+        echo "[INFO] Regenerated $grub_path/grub.cfg"
+    else
+        echo "[WARN] Neither grub-mkconfig nor grub2-mkconfig was found in your PATH."
+        echo "       Run it manually, e.g.: grub-mkconfig -o $grub_path/grub.cfg"
+    fi
+}
+
 ## Prompts
 
 # Choosing a background, comment this out if it's annoying
@@ -45,6 +59,39 @@ else
     # copy recursive, update, verbose
     mkdir -p "$grub_path/themes" || { echo "[ERROR] Could not create $grub_path/themes"; exit 1; }
     cp -ruv "$THEME_DIR" "$grub_path/themes/" | awk '$0 !~ /skipped/ { print "\t"$0 }'
+
+    # optional: wire the theme up in /etc/default/grub (skipped = today's behavior)
+    read -p "[?] Update GRUB_THEME= in /etc/default/grub? [y/N] " -en 1 update_grub_theme
+    if [[ "$update_grub_theme" =~ ^[yY] ]]; then
+        if [[ -f /etc/default/grub ]] ; then
+            # one-time backup, never overwrite an existing one
+            if [[ -e /etc/default/grub.grubphemous-backup ]] ; then
+                echo "[INFO] Backup already exists at /etc/default/grub.grubphemous-backup (not overwriting)"
+            else
+                cp -n /etc/default/grub /etc/default/grub.grubphemous-backup && echo "[INFO] Backup created at /etc/default/grub.grubphemous-backup"
+            fi
+            grub_theme_line="GRUB_THEME=\"$grub_path/themes/grub_themer/theme.txt\""
+            if grep -q '^GRUB_THEME=' /etc/default/grub ; then
+                sed -i "s|^GRUB_THEME=.*|${grub_theme_line}|" /etc/default/grub
+            else
+                printf '\n# Lines to configure the Grubphemous theme\n%s\n' "$grub_theme_line" >> /etc/default/grub
+            fi
+            echo "[INFO] /etc/default/grub now contains:"
+            grep '^GRUB_THEME=' /etc/default/grub
+        else
+            echo "[ERROR] /etc/default/grub not found, cannot update GRUB_THEME="
+        fi
+    else
+        echo "[INFO] [Skipping] Updating GRUB_THEME= in /etc/default/grub"
+    fi
+
+    # optional: regenerate grub.cfg right away (skipped = today's behavior)
+    read -p "[?] Re-run grub-mkconfig now? [y/N] " -en 1 run_mkconfig
+    if [[ "$run_mkconfig" =~ ^[yY] ]]; then
+        run_grub_mkconfig
+    else
+        echo "[INFO] [Skipping] Re-running grub-mkconfig"
+    fi
 fi
 
 echo
