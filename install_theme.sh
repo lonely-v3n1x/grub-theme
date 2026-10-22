@@ -6,10 +6,14 @@ if [[ `id -u` -ne 0 ]] ; then
 	exit
 fi 
 
-# this should be the directory of the clones repo
+# this should be the directory of the cloned repo
 SCRIPT_DIR="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 # I accidentally deleted the above line once and it copied / into the theme folder, so lets prevent this
 if [[ -z $SCRIPT_DIR ]] ; then echo "Something didn't work, exiting"; exit; fi
+
+# the theme folder inside this repo, must match the name used below and in the README
+THEME_DIR="$SCRIPT_DIR/grub_themer"
+if [[ ! -d "$THEME_DIR" ]] ; then echo "Can't find the theme folder $THEME_DIR. Exiting."; exit 1; fi
 
 # check if the grub folder is called grub/ or grub2/
 if [ -d /boot/grub ]    ; then
@@ -25,21 +29,22 @@ theme_path="$grub_path/themes/grub_themer"
 ## Prompts
 
 # Choosing a background, comment this out if it's annoying
-read -p "[?] Do you want to choose a specific background? [y/N] " -en 1 choose_bg 
-if [[ "$choose_bg" =~ y|Y ]]; then
+read -p "[?] Do you want to choose a specific background? [y/N] " -en 1 choose_bg
+if [[ "$choose_bg" =~ ^[yY] ]]; then
     echo "[INFO] Choosing a background from ./background/"
-    $SCRIPT_DIR/choose_background.sh
+    "$SCRIPT_DIR/choose_background.sh"
 else
     echo "[INFO] [Skipping] Choosing a background"
 fi
 
 read -p "[?] Copy/Update the theme to '$theme_path'? [Y/n] " -en 1 copy_theme
-if [[ "$copy_theme" =~ y|Y || -z "$copy_theme" ]]; then
+if [[ "$copy_theme" =~ ^[nN] ]]; then
+    echo "[INFO] [Skipping] Copying the theme files to boot partition"
+else
     echo "[INFO] => Copying the theme files to boot partition:"
     # copy recursive, update, verbose
-    cd $SCRIPT_DIR && cp -ruv ./grub_themer $grub_path/themes/ | awk '$0 !~ /skipped/ { print "\t"$0 }'
-else
-    echo "[INFO] [Skipping] Copying the theme files to boot partition"
+    mkdir -p "$grub_path/themes" || { echo "[ERROR] Could not create $grub_path/themes"; exit 1; }
+    cp -ruv "$THEME_DIR" "$grub_path/themes/" | awk '$0 !~ /skipped/ { print "\t"$0 }'
 fi
 
 echo
