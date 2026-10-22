@@ -2,3 +2,4 @@
 *.otf
 !install_theme.sh
 !choose_background.sh
+!uninstall_theme.sh
